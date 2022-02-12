@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using static PokeWeb.Controllers.DbController;
 
 namespace PokeWeb
 {
     public partial class PokeContext : DbContext
     {
+        public DbSet<Pokemon> Pokemons { get; set; }
+        public DbSet<PokemonType> PokemonTypes { get; set; }
+
         public PokeContext()
         {
 
@@ -26,6 +30,7 @@ namespace PokeWeb
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             OnModelCreatingPartial(modelBuilder);
+            modelBuilder.Entity<Pokemon>();
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

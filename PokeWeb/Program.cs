@@ -1,7 +1,11 @@
+using PokeWeb;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//不設定連結字串的呼叫方式
+builder.Services.AddDbContext<PokeContext>();
 
 var app = builder.Build();
 
