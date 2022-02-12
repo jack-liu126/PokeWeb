@@ -5,7 +5,7 @@ namespace PokeWeb.Models
 {
     public class DbModel
     {
-        public class Pokemon
+        public class db_Pokemon
         {
             [Key]
             [Display(Name = "編號")]
@@ -33,7 +33,7 @@ namespace PokeWeb.Models
             public DateTime CreatTime { get; set; }
         }
 
-        public class PokemonType
+        public class db_PokemonType
         {
             [Key]
             [Display(Name = "編號")]

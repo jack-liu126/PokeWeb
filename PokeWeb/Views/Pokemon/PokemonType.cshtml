@@ -1,8 +1,34 @@
-﻿@{
+﻿@model PokemonType_Website
+@{
     ViewData["Title"] = "新增屬性";
 }
 
-
+<form asp-controller="Pokemon" asp-action="PokemonType" enctype="multipart/form-data" method="post">
+    <div class="form-floating mb-3">
+        <input asp-for="Type.TwName" class="form-control" id="pmTwName" placeholder="妙蛙種子">
+        <label for="pmTwName">中文屬性名稱</label>
+        <span asp-validation-for="Type.TwName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Type.JpName" class="form-control" id="pmJpName" placeholder="フシギダネ">
+        <label for="pmJpName">日文屬性名稱</label>
+        <span asp-validation-for="Type.JpName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Type.EnName" class="form-control" id="pmEnName" placeholder="Bulbasaur">
+        <label for="pmEnName">英文屬性名稱</label>
+        <span asp-validation-for="Type.EnName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Image" class="form-label">檔案上傳-屬性</label>
+        <input asp-for="Type.Image" class="form-control" id="Image">
+    </div>
+    <div class="mb-3">
+        <label for="ImageIcon" class="form-label">檔案上傳-屬性縮圖</label>
+        <input asp-for="Type.ImageIcon" class="form-control" id="ImageIcon">
+    </div>
+    <button asp-controller="Pokemon" asp-action="PokemonType" class="btn btn-outline-success">新增</button>
+</form>
 
 
 
@@ -10,4 +36,8 @@
     @{
         await Html.RenderPartialAsync("~/Sidebar/S_Pokemon.cshtml");
     }
+}
+@section Scripts{
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 }
