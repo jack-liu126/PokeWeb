@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PokeWeb.Controllers
+namespace PokeWeb.Models
 {
-    public class DbController : Controller
+    public class DbModel
     {
         public class Pokemon
         {

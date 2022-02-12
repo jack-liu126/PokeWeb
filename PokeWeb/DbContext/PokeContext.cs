@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using static PokeWeb.Controllers.DbController;
+using static PokeWeb.Models.DbModel;
 
 namespace PokeWeb
 {
