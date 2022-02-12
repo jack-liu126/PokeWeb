@@ -1,0 +1,17 @@
+﻿.boxBottom {
+    display: flex;
+    margin-top: 1%;
+    .boxRight {
+        width: calc(100% * 3 / 5);
+        margin: 0 1%;
+    }
+
+    .boxLeft {
+        height: 400px;
+        overflow-y: auto;
+    }
+
+    .boxRight {
+        width: 90%;
+    }
+}

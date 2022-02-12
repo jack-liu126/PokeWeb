@@ -31,6 +31,7 @@ namespace PokeWeb
         {
             OnModelCreatingPartial(modelBuilder);
             modelBuilder.Entity<Pokemon>();
+            modelBuilder.Entity<PokemonType>();
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

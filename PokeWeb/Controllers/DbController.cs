@@ -15,12 +15,12 @@ namespace PokeWeb.Controllers
             [Display(Name = "中文名稱")]
             [Required]
             public string TwName { get; set; }
-            [Display(Name = "英文名稱")]
-            [Required]
-            public string EnName { get; set; }
             [Display(Name = "日文名稱")]
             [Required]
             public string JpName { get; set; }
+            [Display(Name = "英文名稱")]
+            [Required]
+            public string EnName { get; set; }
             [Column(TypeName = "int")]
             [Display(Name = "屬性1")]
             [Required(ErrorMessage = "屬性1不可為空")]
@@ -42,12 +42,12 @@ namespace PokeWeb.Controllers
             [Display(Name = "中文屬性名稱")]
             [Required(ErrorMessage = "中文屬性不可為空")]
             public string TwName { get; set; }
-            [Display(Name = "英文屬性名稱")]
-            [Required(ErrorMessage = "英文屬性不可為空")]
-            public string EnName { get; set; }
             [Display(Name = "日文屬性名稱")]
             [Required(ErrorMessage = "日文屬性不可為空")]
             public string JpName { get; set; }
+            [Display(Name = "英文屬性名稱")]
+            [Required(ErrorMessage = "英文屬性不可為空")]
+            public string EnName { get; set; }
             [Display(Name = "屬性圖片路徑")]
             public string Image { get; set; }
             [Display(Name = "屬性ICON圖片路徑")]

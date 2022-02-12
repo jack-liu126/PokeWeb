@@ -8,5 +8,20 @@ namespace PokeWeb.Controllers
         {
             return View();
         }
+
+        public IActionResult Detail()
+        {
+            return View();
+        }
+
+        public IActionResult PokemonAdd()
+        {
+            return View();
+        }
+
+        public IActionResult PokemonType()
+        {
+            return View();
+        }
     }
 }
