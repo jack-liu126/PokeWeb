@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeWeb", "PokeWeb\PokeWeb.csproj", "{3D9F9128-701D-44C6-B674-A948ED9A3631}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D9F9128-701D-44C6-B674-A948ED9A3631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D9F9128-701D-44C6-B674-A948ED9A3631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D9F9128-701D-44C6-B674-A948ED9A3631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D9F9128-701D-44C6-B674-A948ED9A3631}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F197BEE-0CF5-45A0-AE3E-9FB856BE89E4}
+	EndGlobalSection
+EndGlobal
