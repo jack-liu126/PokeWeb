@@ -1,10 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static PokeWeb.Models.DbModel;
 
 namespace PokeWeb.Models
 {
     public class PokemonType_Website
     {
         public Type Type { get; set; }
+    }
+
+    public class PokemonAdd_Website
+    {
+        public db_Pokemon Pokemon { get; set; }
     }
 
     public class Type
@@ -24,5 +30,25 @@ namespace PokeWeb.Models
         public List<IFormFile> Image { get; set; }
         [Display(Name = "屬性ICON圖片路徑")]
         public List<IFormFile> ImageIcon { get; set; }
+    }
+
+    public class PokemonList
+    {
+        [Display(Name = "編號")]
+        public string No { get; set; }
+        [Display(Name = "中文名稱")]
+        public string TwName { get; set; }
+        [Display(Name = "英文名稱")]
+        public string EnName { get; set; }
+        [Display(Name = "日文名稱")]
+        public string JpName { get; set; }
+        [Display(Name = "屬性1")]
+        public string Type_1 { get; set; }
+        [Display(Name = "屬性2")]
+        public string Type_2 { get; set; }
+        [Display(Name = "屬性1圖片路徑")]
+        public string Type_1_Img { get; set; }
+        [Display(Name = "屬性2圖片路徑")]
+        public string Type_2_Img { get; set; }
     }
 }
