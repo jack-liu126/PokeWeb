@@ -1,8 +1,86 @@
-﻿@{
+﻿@model PokemonList
+@{
     ViewData["Title"] = "寶可夢清單";
+    List<PokemonList> pl = ViewBag.PokemonList;
 }
 
+@if (pl.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.No)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.Image)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.TwName)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.JpName)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.EnName)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.Type_1)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(Model=>Model.Type_2)
+                </td>
+                <td>
+                    編輯
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PokemonList pok in pl)
+            {
+                <tr>
+                    <td>
+                        <label asp-for="@pok.No">@pok.No</label>
+                    </td>
+                    <td>
+                        @if (@pok.Image != null)
+                        {
+                            <img src="@pok.Image" asp-append-version="true" width="50" height="50">
+                        }
+                    </td>
+                    <td>
+                        <label asp-for="@pok.TwName">@pok.TwName</label>
+                    </td>
+                    <td>
+                        <label asp-for="@pok.JpName">@pok.JpName</label>
+                    </td>
+                    <td>
+                        <label asp-for="@pok.EnName">@pok.EnName</label>
+                    </td>
+                    <td>
+                        <img src="@pok.Type_1_Img" asp-append-version="true" width="50" height="50">
+                    </td>
+                    <td>
+                        @if (@pok.Type_2_Img != null)
+                        {
+                            <img src="@pok.Type_2_Img" asp-append-version="true" width="50" height="50">
+                        }
+                    </td>
+                    <td>
+                        <a href="~/Pokemon/PokemonEdit?id=@pok.No" class="btn btn-outline-info">編輯</a>
+                    </td>
+                </tr>
+            }
 
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        查無資料
+    </div>
+}
 
 
 

@@ -28,9 +28,14 @@ namespace PokeWeb.Models
             [Display(Name = "屬性2")]
             [Required]
             public int Type_2 { get; set; }
+            [Display(Name = "圖片")]
+            [Required]
+            public string ImgRoute { get; set; }
             [Display(Name = "建立時間")]
             [Required]
             public DateTime CreatTime { get; set; }
+            [NotMapped]
+            public IFormFile ImgFile { get; set; }
         }
 
         public class db_PokemonType

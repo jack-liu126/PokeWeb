@@ -1,0 +1,48 @@
+﻿@model PokemonEdit_Website
+
+@{
+    ViewData["Title"] = "寶可夢修改";
+    SelectList pt = ViewBag.PokeType;
+}
+
+
+<form asp-controller="Pokemon" asp-action="PokemonEdit" enctype="multipart/form-data" method="post">
+    <div class="form-floating mb-3">
+        <input asp-for="PokemonList.No" class="form-control" id="pmNo" placeholder="0001">
+        <label for="pmNo">編號</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="PokemonList.TwName" class="form-control" id="pmTwName" placeholder="妙蛙種子">
+        <label for="pmTwName">中文名稱</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="PokemonList.JpName" class="form-control" id="pmJpName" placeholder="フシギダネ">
+        <label for="pmJpName">日文名稱</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="PokemonList.EnName" class="form-control" id="pmEnName" placeholder="Bulbasaur">
+        <label for="pmEnName">英文名稱</label>
+    </div>
+    <div class="mb-3">
+        <select asp-for="PokemonList.Type_1" asp-items="pt" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <select asp-for="PokemonList.Type_2" asp-items="pt" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <label for="Image" class="form-label">檔案上傳-寶可夢圖片</label>
+        <input asp-for="PokemonList.ImageFile" class="form-control" id="Image">
+        <div id="ImageHelp" class="form-text">@Model.PokemonList.Image</div>
+    </div>
+    @*@Html.DropDownListFor(x=>x.No,new SelectList(ViewBag.PokeType,"No","TwName"))*@
+    <button asp-controller="Pokemon" asp-action="PokemonEdit" class="btn btn-outline-success">更新</button>
+    <button asp-controller="Pokemon" asp-action="Detail" class="btn btn-outline-success">返回</button>
+</form>
+
+
+
+@section SiderBar{
+    @{
+        await Html.RenderPartialAsync("~/Sidebar/S_Pokemon.cshtml");
+    }
+}

@@ -1,9 +1,40 @@
-﻿@{
+﻿@model PokemonAdd_Website
+@{
     ViewData["Title"] = "新增寶可夢";
+    SelectList pt = ViewBag.PokeType;
 }
 
 
-
+<form asp-controller="Pokemon" asp-action="PokemonAdd" enctype="multipart/form-data" method="post">
+    <div class="form-floating mb-3">
+        <input asp-for="Pokemon.No" class="form-control" id="pmNo" placeholder="0001">
+        <label for="pmNo">編號</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Pokemon.TwName" class="form-control" id="pmTwName" placeholder="妙蛙種子">
+        <label for="pmTwName">中文名稱</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Pokemon.JpName" class="form-control" id="pmJpName" placeholder="フシギダネ">
+        <label for="pmJpName">日文名稱</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Pokemon.EnName" class="form-control" id="pmEnName" placeholder="Bulbasaur">
+        <label for="pmEnName">英文名稱</label>
+    </div>
+    <div class="mb-3">
+        <select asp-for="Pokemon.Type_1" asp-items="pt" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <select asp-for="Pokemon.Type_2" asp-items="pt" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <label for="Image" class="form-label">檔案上傳-寶可夢圖片</label>
+        <input asp-for="Pokemon.ImgFile" class="form-control" id="Image">
+    </div>
+    @*@Html.DropDownListFor(x=>x.No,new SelectList(ViewBag.PokeType,"No","TwName"))*@
+    <button asp-controller="Pokemon" asp-action="PokemonAdd" class="btn btn-outline-success">新增</button>
+</form>
 
 
 @section SiderBar{

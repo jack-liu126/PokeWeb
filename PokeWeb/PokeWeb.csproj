@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="SideBar\" />
+    <Folder Include="wwwroot\image\Pokemon\Pokemon\" />
+    <Folder Include="wwwroot\image\Pokemon\Type\" />
   </ItemGroup>
 
   <ItemGroup>
