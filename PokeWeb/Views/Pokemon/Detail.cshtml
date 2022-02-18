@@ -1,34 +1,34 @@
-﻿@model PokemonList
+﻿@model Detail_Website
 @{
     ViewData["Title"] = "寶可夢清單";
     List<PokemonList> pl = ViewBag.PokemonList;
+    int Page = ViewBag.Page;
 }
-
 @if (pl.Count > 0)
 {
     <table class="table">
         <thead>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.No)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.No)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.Image)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.Image)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.TwName)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.TwName)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.JpName)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.JpName)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.EnName)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.EnName)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.Type_1)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.Type_1)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(Model=>Model.Type_2)
+                    @Html.DisplayNameFor(Model=>Model.PokemonList.Type_2)
                 </td>
                 <td>
                     編輯
@@ -71,9 +71,36 @@
                     </td>
                 </tr>
             }
-
         </tbody>
     </table>
+    @if (Page > 0)
+    {
+        <form asp-controller="Pokemon" asp-action="Detail">
+            <div class="row justify-content-center">
+                <div class="col-5">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Previous" asp-page="/Detail" asp-route-SelectPage="1">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = 1; i <= Page; i++)
+                            {
+                                @*<li class="page-item"><a class="page-link" href="#">@i</a></li>*@
+                                <li class="page-item"><a class="page-link" asp-page="/Detail" asp-route-SelectPage="@i">@i</a></li>
+                            }
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next" asp-page="/Detail" asp-route-SelectPage="1">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </form>
+    }
 }
 else
 {
@@ -81,6 +108,7 @@ else
         查無資料
     </div>
 }
+
 
 
 

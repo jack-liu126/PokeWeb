@@ -18,6 +18,13 @@ namespace PokeWeb.Models
         public PokemonList PokemonList { get; set; }
     }
 
+    public class Detail_Website
+    {
+        //public int Page { get; set; }
+        public string SelectPage { get; set; }
+        public PokemonList PokemonList { get; set; }
+    }
+
     public class Type
     {
         [Display(Name = "編號")]
@@ -41,6 +48,7 @@ namespace PokeWeb.Models
     {
         [Display(Name = "編號")]
         public string No { get; set; }
+        public int Count { get; set; }
         [Display(Name = "中文名稱")]
         public string TwName { get; set; }
         [Display(Name = "英文名稱")]

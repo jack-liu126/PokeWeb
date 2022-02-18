@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using PokeWeb.Models;
 using static PokeWeb.Models.DbModel;
 
@@ -22,24 +23,53 @@ namespace PokeWeb.Controllers
             return View();
         }
 
-        public IActionResult Detail()
+        public async Task<IActionResult> Detail(Detail_Website dw)
         {
-            ViewBag.PokemonList = (from x in _db.Set<db_Pokemon>()
-                                   join y in _db.Set<db_PokemonType>() on x.Type_1 equals y.No
-                                   join z in _db.Set<db_PokemonType>() on x.Type_2 equals z.No
-                                   select new PokemonList()
-                                   {
-                                       No = x.No,
-                                       TwName = x.TwName,
-                                       JpName = x.JpName,
-                                       EnName = x.EnName,
-                                       Type_1 = string.IsNullOrEmpty(y.TwName) ? "" : y.TwName,
-                                       Type_1_Img = string.IsNullOrEmpty(y.Image) ? "" : y.Image,
-                                       Type_2 = string.IsNullOrEmpty(z.TwName) ? "" : z.TwName,
-                                       Type_2_Img = string.IsNullOrEmpty(z.Image) ? "" : z.Image,
-                                       Image = string.IsNullOrEmpty(x.ImgRoute) ? "" : x.ImgRoute
-                                   }).ToList();
-            return View();
+            int PokemonRow = _db.Set<db_Pokemon>().Count();
+            ViewBag.Page = PokemonRow % 10 != 0 ? (PokemonRow / 10) + 1 : PokemonRow / 10;
+            List<PokemonList> pll = new List<PokemonList>();
+            if (dw.SelectPage != null)
+            {
+                pll = await (from x in _db.Set<db_Pokemon>()
+                             join y in _db.Set<db_PokemonType>() on x.Type_1 equals y.No
+                             join z in _db.Set<db_PokemonType>() on x.Type_2 equals z.No
+                             where x.Count > int.Parse(dw.SelectPage) * 10 - 10
+                                && x.Count <= int.Parse(dw.SelectPage) * 10
+                             select new PokemonList()
+                             {
+                                 No = x.No,
+                                 TwName = x.TwName,
+                                 JpName = x.JpName,
+                                 EnName = x.EnName,
+                                 Type_1 = string.IsNullOrEmpty(y.TwName) ? "" : y.TwName,
+                                 Type_1_Img = string.IsNullOrEmpty(y.Image) ? "" : y.Image,
+                                 Type_2 = string.IsNullOrEmpty(z.TwName) ? "" : z.TwName,
+                                 Type_2_Img = string.IsNullOrEmpty(z.Image) ? "" : z.Image,
+                                 Image = string.IsNullOrEmpty(x.ImgRoute) ? "" : x.ImgRoute
+                             }).ToListAsync();
+            }
+            else
+            {
+                pll = await (from x in _db.Set<db_Pokemon>()
+                             join y in _db.Set<db_PokemonType>() on x.Type_1 equals y.No
+                             join z in _db.Set<db_PokemonType>() on x.Type_2 equals z.No
+                             where x.Count > 0
+                                && x.Count <= 10
+                             select new PokemonList()
+                             {
+                                 No = x.No,
+                                 TwName = x.TwName,
+                                 JpName = x.JpName,
+                                 EnName = x.EnName,
+                                 Type_1 = string.IsNullOrEmpty(y.TwName) ? "" : y.TwName,
+                                 Type_1_Img = string.IsNullOrEmpty(y.Image) ? "" : y.Image,
+                                 Type_2 = string.IsNullOrEmpty(z.TwName) ? "" : z.TwName,
+                                 Type_2_Img = string.IsNullOrEmpty(z.Image) ? "" : z.Image,
+                                 Image = string.IsNullOrEmpty(x.ImgRoute) ? "" : x.ImgRoute
+                             }).ToListAsync();
+            }
+            ViewBag.PokemonList = pll;
+            return View(dw);
         }
 
         public IActionResult PokemonAdd()
@@ -75,6 +105,7 @@ namespace PokeWeb.Controllers
                 string FileName = pw.Pokemon.No + "_" + pw.Pokemon.TwName;
                 pw.Pokemon.CreatTime = DateTime.Now;
                 pw.Pokemon.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName);
+                pw.Pokemon.Count = int.Parse(pw.Pokemon.No);
                 SaveFile(pw.Pokemon.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
                 await _db.Pokemons.AddAsync(pw.Pokemon);
                 await _db.SaveChangesAsync();
@@ -123,7 +154,7 @@ namespace PokeWeb.Controllers
 
         public IActionResult PokemonEdit(string id)
         {
-            PokemonEdit_Website pw=new PokemonEdit_Website();
+            PokemonEdit_Website pw = new PokemonEdit_Website();
             PokemonList pl = (from x in _db.Set<db_Pokemon>()
                               where x.No == id
                               select new PokemonList()
@@ -149,17 +180,26 @@ namespace PokeWeb.Controllers
             {
                 db_Pokemon db_p = new db_Pokemon();
                 db_p.No = pw.PokemonList.No;
+                db_p.Count = pw.PokemonList.Count;
                 db_p.TwName = pw.PokemonList.TwName;
                 db_p.JpName = pw.PokemonList.JpName;
                 db_p.EnName = pw.PokemonList.EnName;
-                db_p.Type_1=Convert.ToInt32(pw.PokemonList.Type_1);
-                db_p.Type_2=Convert.ToInt32(pw.PokemonList.Type_2);
-                db_p.ImgFile = pw.PokemonList.ImageFile;
+                db_p.Type_1 = Convert.ToInt32(pw.PokemonList.Type_1);
+                db_p.Type_2 = Convert.ToInt32(pw.PokemonList.Type_2);
+                db_p.ImgFile = pw.PokemonList.ImageFile != null ? pw.PokemonList.ImageFile : null;
                 string FileName = db_p.No + "_" + db_p.TwName;
                 db_p.CreatTime = DateTime.Now;
-                db_p.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(db_p.ImgFile.FileName);
-                SaveFile(db_p.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(db_p.ImgFile.FileName));
+                if (db_p.ImgFile != null)
+                {
+                    db_p.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(db_p.ImgFile.FileName);
+                    SaveFile(db_p.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(db_p.ImgFile.FileName));
+                }
+
                 _db.Pokemons.Update(db_p);
+                if (db_p.ImgFile == null)
+                {
+                    _db.Entry<db_Pokemon>(db_p).Property(x => x.ImgRoute).IsModified = false;
+                }
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)

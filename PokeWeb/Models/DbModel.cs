@@ -11,6 +11,8 @@ namespace PokeWeb.Models
             [Display(Name = "編號")]
             [Required]
             public string No { get; set; }
+            [Required]
+            public int Count { get; set; }
             [Display(Name = "中文名稱")]
             [Required]
             public string TwName { get; set; }
@@ -35,7 +37,7 @@ namespace PokeWeb.Models
             [Required]
             public DateTime CreatTime { get; set; }
             [NotMapped]
-            public IFormFile ImgFile { get; set; }
+            public IFormFile? ImgFile { get; set; }
         }
 
         public class db_PokemonType
