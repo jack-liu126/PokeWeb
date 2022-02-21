@@ -2,7 +2,31 @@
 @{
     ViewData["Title"] = "寶可夢清單";
     List<PokemonList> pl = ViewBag.PokemonList;
-    int Page = ViewBag.Page;
+    int TotalPage = ViewBag.TatolPage;
+    int Page = 1;
+    if (ViewBag.Page > 1)
+    {
+        Page = ViewBag.Page;
+    }
+    int LastPage = Page - 1;
+    int NextPage = Page + 1;
+    int StartPage = 0;
+    int EndPage = 0;
+    if (Page <= 5)
+    {
+        StartPage = 1;
+        EndPage = TotalPage >= 10 ? 10 : TotalPage;
+    }
+    else if (Page > 5 && Page + 5 <= TotalPage)
+    {
+        StartPage = Page - 5;
+        EndPage = Page + 5;
+    }
+    else if (TotalPage - Page < 5)
+    {
+        StartPage = TotalPage - 9;
+        EndPage = Page + (TotalPage - Page);
+    }
 }
 @if (pl.Count > 0)
 {
@@ -67,34 +91,70 @@
                         }
                     </td>
                     <td>
-                        <a href="~/Pokemon/PokemonEdit?id=@pok.No" class="btn btn-outline-info">編輯</a>
+                        <a href="~/Pokemon/PokemonEdit?id=@pok.No&page=@Page" class="btn btn-outline-info">編輯</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    @if (Page > 0)
+    @if (TotalPage > 0)
     {
         <form asp-controller="Pokemon" asp-action="Detail">
             <div class="row justify-content-center">
                 <div class="col-5">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" aria-label="Previous" asp-page="/Detail" asp-route-SelectPage="1">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            @for (int i = 1; i <= Page; i++)
+                            @if (Page == 1)
                             {
-                                @*<li class="page-item"><a class="page-link" href="#">@i</a></li>*@
-                                <li class="page-item"><a class="page-link" asp-page="/Detail" asp-route-SelectPage="@i">@i</a></li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
                             }
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next" asp-page="/Detail" asp-route-SelectPage="1">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Previous" asp-page="/Detail" asp-route-SelectPage="@LastPage">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            }
+                            @for (int i = 1; i <= TotalPage; i++)
+                            {
+                                @if (i == Page)
+                                {
+                                    <li class="page-item disabled"><a class="page-link">@i</a></li>
+                                }
+                                else
+                                {
+                                    @if (i >= StartPage && i <= EndPage)
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-page="/Detail" asp-route-SelectPage="@i">@i</a></li>
+                                    }
+                                    else if (i == Page)
+                                    {
+                                        <li class="page-item disabled"><a class="page-link">@i</a></li>
+                                    }
+                                }
+
+                            }
+                            @if (Page == TotalPage)
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Next" asp-page="/Detail" asp-route-SelectPage="@NextPage">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </nav>
                 </div>

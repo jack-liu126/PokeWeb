@@ -26,7 +26,7 @@ namespace PokeWeb.Controllers
         public async Task<IActionResult> Detail(Detail_Website dw)
         {
             int PokemonRow = _db.Set<db_Pokemon>().Count();
-            ViewBag.Page = PokemonRow % 10 != 0 ? (PokemonRow / 10) + 1 : PokemonRow / 10;
+            ViewBag.TatolPage = PokemonRow % 10 != 0 ? (PokemonRow / 10) + 1 : PokemonRow / 10;
             List<PokemonList> pll = new List<PokemonList>();
             if (dw.SelectPage != null)
             {
@@ -47,6 +47,7 @@ namespace PokeWeb.Controllers
                                  Type_2_Img = string.IsNullOrEmpty(z.Image) ? "" : z.Image,
                                  Image = string.IsNullOrEmpty(x.ImgRoute) ? "" : x.ImgRoute
                              }).ToListAsync();
+                ViewBag.Page = Convert.ToInt32(dw.SelectPage);
             }
             else
             {
@@ -104,9 +105,12 @@ namespace PokeWeb.Controllers
             {
                 string FileName = pw.Pokemon.No + "_" + pw.Pokemon.TwName;
                 pw.Pokemon.CreatTime = DateTime.Now;
-                pw.Pokemon.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName);
                 pw.Pokemon.Count = int.Parse(pw.Pokemon.No);
-                SaveFile(pw.Pokemon.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
+                if (pw.Pokemon.ImgFile != null)
+                {
+                    pw.Pokemon.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName);
+                    SaveFile(pw.Pokemon.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
+                }
                 await _db.Pokemons.AddAsync(pw.Pokemon);
                 await _db.SaveChangesAsync();
             }
@@ -152,7 +156,7 @@ namespace PokeWeb.Controllers
             return RedirectToAction("PokemonType");
         }
 
-        public IActionResult PokemonEdit(string id)
+        public IActionResult PokemonEdit(string id, string page)
         {
             PokemonEdit_Website pw = new PokemonEdit_Website();
             PokemonList pl = (from x in _db.Set<db_Pokemon>()
@@ -160,6 +164,7 @@ namespace PokeWeb.Controllers
                               select new PokemonList()
                               {
                                   No = x.No,
+                                  Count = x.Count,
                                   TwName = x.TwName,
                                   EnName = x.EnName,
                                   JpName = x.JpName,
@@ -170,17 +175,18 @@ namespace PokeWeb.Controllers
             pw.PokemonList = pl;
             ViewBag.PokeType = new SelectList(from x in _db.Set<db_PokemonType>()
                                               select new { x.No, x.TwName }, "No", "TwName");
+            ViewBag.Page = page;
             return View(pw);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PokemonEdit(PokemonEdit_Website pw)
+        public async Task<IActionResult> PokemonEdit(PokemonEdit_Website pw, string Page)
         {
             try
             {
                 db_Pokemon db_p = new db_Pokemon();
                 db_p.No = pw.PokemonList.No;
-                db_p.Count = pw.PokemonList.Count;
+                db_p.Count = Convert.ToInt32(pw.PokemonList.No);
                 db_p.TwName = pw.PokemonList.TwName;
                 db_p.JpName = pw.PokemonList.JpName;
                 db_p.EnName = pw.PokemonList.EnName;
@@ -206,7 +212,8 @@ namespace PokeWeb.Controllers
             {
 
             }
-            return RedirectToAction("Detail");
+            //return RedirectToAction("Detail");
+            return Redirect("Detail?SelectPage=" + Page);
         }
 
         public async void SaveFile(IFormFile file, string Path)

@@ -10,6 +10,7 @@
     <div class="form-floating mb-3">
         <input asp-for="PokemonList.No" class="form-control" id="pmNo" placeholder="0001">
         <label for="pmNo">編號</label>
+        <input asp-for="PokemonList.Count" style="display:none;">
     </div>
     <div class="form-floating mb-3">
         <input asp-for="PokemonList.TwName" class="form-control" id="pmTwName" placeholder="妙蛙種子">
@@ -35,6 +36,7 @@
         <div id="ImageHelp" class="form-text">@Model.PokemonList.Image</div>
     </div>
     @*@Html.DropDownListFor(x=>x.No,new SelectList(ViewBag.PokeType,"No","TwName"))*@
+    <input hidden="hidden" value="@ViewBag.Page" name="Page">
     <button asp-controller="Pokemon" asp-action="PokemonEdit" class="btn btn-outline-success">更新</button>
     <button asp-controller="Pokemon" asp-action="Detail" class="btn btn-outline-success">返回</button>
 </form>
