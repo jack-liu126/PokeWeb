@@ -76,6 +76,7 @@ namespace PokeWeb.Controllers
                                  Image = string.IsNullOrEmpty(x.ImgRoute) ? "" : x.ImgRoute
                              }).ToListAsync();
             }
+            pll = pll.OrderBy(x => x.No).ToList();
             ViewBag.PokemonList = pll;
             return View(dw);
         }
