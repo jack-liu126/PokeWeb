@@ -34,5 +34,11 @@
             }
         </tbody>
     </table>
-    <button asp-controller="Pokemon" asp-action="TypeCompareSet" class="btn btn-outline-success">存檔</!button>
+    <button asp-controller="Pokemon" asp-action="TypeCompareSet" class="btn btn-outline-success">存檔</button>
 </form>
+
+@section SiderBar{
+    @{
+        await Html.RenderPartialAsync("~/Sidebar/S_Pokemon.cshtml");
+    }
+}
