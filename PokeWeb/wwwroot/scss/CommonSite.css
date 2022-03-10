@@ -1,0 +1,33 @@
+﻿@charset "UTF-8";
+.TypeCompareTd {
+  vertical-align: middle;
+}
+.TypeCompareTd input {
+  width: 50px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.tablefreeze {
+  table-layout: fixed;
+  /*width: 200px;*/
+  /* 固定寬度 */
+}
+.tablefreeze thead tr th {
+  position: sticky;
+  top: 0;
+  /* 列首永遠固定於上 */
+}
+.tablefreeze th:first-child {
+  z-index: 2;
+}
+.tablefreeze th {
+  background-color: white;
+}
+.tablefreeze td:first-child {
+  position: sticky;
+  left: 0;
+  /* 首行永遠固定於左 */
+  z-index: 1;
+}

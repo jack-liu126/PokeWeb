@@ -120,6 +120,11 @@
                                     </a>
                                 </li>
                             }
+                            @if (Page > 6)
+                            {
+                                <li class="page-item"><a class="page-link" asp-page="/Detail" asp-route-SelectPage="1">1</a></li>
+                                <li class="page-item">......</li>
+                            }
                             @for (int i = 1; i <= TotalPage; i++)
                             {
                                 @if (i == Page)
@@ -138,6 +143,11 @@
                                     }
                                 }
 
+                            }
+                            @if (TotalPage - Page > 6)
+                            {
+                                <li class="page-item">......</li>
+                                <li class="page-item"><a class="page-link" asp-page="/Detail" asp-route-SelectPage="@TotalPage">@TotalPage</a></li>
                             }
                             @if (Page == TotalPage)
                             {

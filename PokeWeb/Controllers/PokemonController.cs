@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using PokeWeb.Extensions;
 using PokeWeb.Models;
+using System.Text;
 using static PokeWeb.Models.DbModel;
 
 namespace PokeWeb.Controllers
@@ -10,12 +13,16 @@ namespace PokeWeb.Controllers
     {
         private readonly PokeContext _db;
         private readonly IWebHostEnvironment _env;
-        private string _staticRoute(string FileRoute) => _env.WebRootPath + "\\" + FileRoute;
+        private readonly IFileExt _file;
+        private readonly ITypeCompareSet_Website _itcw;
+        //private string _staticRoute(string FileRoute) => _env.WebRootPath + "\\" + FileRoute;
         private string _dbRoute(string FileRoute) => "~/" + FileRoute;
-        public PokemonController(PokeContext context, IWebHostEnvironment env)
+        public PokemonController(PokeContext context, IWebHostEnvironment env, IFileExt file, ITypeCompareSet_Website itcw)
         {
             _db = context;
             _env = env;
+            _file = file;
+            _itcw = itcw;
         }
 
         public IActionResult Index()
@@ -109,7 +116,8 @@ namespace PokeWeb.Controllers
                 if (pw.Pokemon.ImgFile != null)
                 {
                     pw.Pokemon.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName);
-                    SaveFile(pw.Pokemon.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
+                    //SaveFile(pw.Pokemon.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
+                    _file.SaveFile(pw.Pokemon.ImgFile, "image\\Pokemon\\Pokemon\\", FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
                 }
                 await _db.Pokemons.AddAsync(pw.Pokemon);
                 await _db.SaveChangesAsync();
@@ -128,7 +136,7 @@ namespace PokeWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> PokemonType(PokemonType_Website ptw)
         {
-            string path = _staticRoute("image/Pokemon/Type/");
+            string path = "image/Pokemon/Type/";
             db_PokemonType dpt = new db_PokemonType();
             dpt.No = _db.PokemonTypes.Count() + 1;
             dpt.TwName = ptw.Type.TwName;
@@ -140,11 +148,13 @@ namespace PokeWeb.Controllers
             {
                 if (ptw.Type.Image[0].Length > 0)
                 {
-                    SaveFile(ptw.Type.Image[0], path);
+                    //SaveFile(ptw.Type.Image[0], path);
+                    _file.SaveFile(ptw.Type.Image[0], path);
                 }
                 if (ptw.Type.ImageIcon[0].Length > 0)
                 {
-                    SaveFile(ptw.Type.ImageIcon[0], path);
+                    //SaveFile(ptw.Type.ImageIcon[0], path);
+                    _file.SaveFile(ptw.Type.ImageIcon[0], path);
                 }
                 await _db.PokemonTypes.AddAsync(dpt);
                 await _db.SaveChangesAsync();
@@ -198,7 +208,8 @@ namespace PokeWeb.Controllers
                 if (db_p.ImgFile != null)
                 {
                     db_p.ImgRoute = _dbRoute("image/Pokemon/Pokemon/") + FileName + Path.GetExtension(db_p.ImgFile.FileName);
-                    SaveFile(db_p.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(db_p.ImgFile.FileName));
+                    //SaveFile(db_p.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(db_p.ImgFile.FileName));
+                    _file.SaveFile(db_p.ImgFile, "image\\Pokemon\\Pokemon\\", FileName + Path.GetExtension(db_p.ImgFile.FileName));
                 }
 
                 _db.Pokemons.Update(db_p);
@@ -216,28 +227,60 @@ namespace PokeWeb.Controllers
             return Redirect("Detail?SelectPage=" + Page);
         }
 
-        public async void SaveFile(IFormFile file, string Path)
+        public async Task<IActionResult> TypeCompareSet()
         {
-            if (file != null)
-            {
-                if (file.Length > 0)
-                {
-                    using FileStream stream = new FileStream(Path + file.FileName, FileMode.Create);
-                    await file.CopyToAsync(stream);
-                }
-            }
+            _itcw.tc = await (from x in _db.Set<db_PokemonType>()
+                              where x.No != 0
+                              select new TypeCompare()
+                              {
+                                  No = x.No,
+                                  Name = x.TwName,
+                                  Image = x.Image,
+                                  tdl = (from y in _db.Set<db_PokemonType>()
+                                         where y.No != 0
+                                         select new TypeDamage()
+                                         {
+                                             No = y.No,
+                                             Damage = (from z in _db.Set<db_TypeCompare>()
+                                                       where x.No == z.Type_1 && y.No == z.Type_2
+                                                       select z.Damage).FirstOrDefault()
+                                         }).ToList()
+                              }).ToListAsync();
+            return View(_itcw);
         }
-
-        public async void SaveFile(IFormFile file, string Path, string FileName)
+        [HttpPost]
+        public async Task<IActionResult> TypeCompareSet(TypeCompareSet_Website tcw)
         {
-            if (file != null)
+            List<db_TypeCompare> tcl = new List<db_TypeCompare>();
+            
+            for(int i = 0; i < tcw.tc.Count; i++)
             {
-                if (file.Length > 0)
+                for(int x = 0; x < tcw.tc[i].tdl.Count; x++)
                 {
-                    using FileStream stream = new FileStream(Path + FileName, FileMode.Create);
-                    await file.CopyToAsync(stream);
+                    db_TypeCompare tc = new db_TypeCompare();
+                    tc.Type_1 = tcw.tc[i].No;
+                    tc.Type_2 = tcw.tc[i].tdl[x].No;
+                    tc.Damage = tcw.tc[i].tdl[x].Damage;
+                    tcl.Add(tc);
                 }
             }
+
+            for (int i = 0; i < tcl.Count; i++)
+            {
+                bool exists = _db.Set<db_TypeCompare>().Any(x => x.Type_1 == tcl[i].Type_1 && x.Type_2 == tcl[i].Type_2);
+                if (!exists)
+                {
+                    await _db.Set<db_TypeCompare>().AddAsync(tcl[i]);
+                }
+                else
+                {
+                    _db.Set<db_TypeCompare>().Update(tcl[i]);
+                }
+            }
+            //await _db.TypeCompares.AddRangeAsync(tcl);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("TypeCompareSet");
         }
     }
 }

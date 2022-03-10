@@ -25,6 +25,11 @@ namespace PokeWeb.Models
         public PokemonList PokemonList { get; set; }
     }
 
+    public class TypeCompareSet_Website : ITypeCompareSet_Website
+    {
+        public List<TypeCompare> tc { get; set; }
+    }
+
     public class Type
     {
         [Display(Name = "編號")]
@@ -66,5 +71,19 @@ namespace PokeWeb.Models
         [Display(Name = "屬性2圖片路徑")]
         public string Type_2_Img { get; set; }
         public IFormFile ImageFile { get; set; }
+    }
+
+    public class TypeCompare
+    {
+        public int No { get; set; }
+        public string Name { get; set; }
+        public string Image { set; get; }
+        public List<TypeDamage> tdl { get; set; }
+    }
+
+    public class TypeDamage
+    {
+        public int No { set; get; }
+        public decimal Damage { get; set; }
     }
 }

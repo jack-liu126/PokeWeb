@@ -7,6 +7,7 @@ namespace PokeWeb
     {
         public DbSet<db_Pokemon> Pokemons { get; set; }
         public DbSet<db_PokemonType> PokemonTypes { get; set; }
+        public DbSet<db_TypeCompare> TypeCompares { get; set; }
 
         public PokeContext()
         {
@@ -32,6 +33,8 @@ namespace PokeWeb
             OnModelCreatingPartial(modelBuilder);
             modelBuilder.Entity<db_Pokemon>();
             modelBuilder.Entity<db_PokemonType>();
+            modelBuilder.Entity<db_TypeCompare>()
+                .HasKey(p => new { p.Type_1, p.Type_2 });
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

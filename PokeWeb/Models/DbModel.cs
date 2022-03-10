@@ -59,5 +59,12 @@ namespace PokeWeb.Models
             [Display(Name = "屬性ICON圖片路徑")]
             public string ImageIcon { get; set; }
         }
+
+        public class db_TypeCompare
+        {
+            public int Type_1 { get; set; }
+            public int Type_2 { get; set; }
+            public decimal Damage { get; set; }
+        }
     }
 }

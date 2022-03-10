@@ -1,0 +1,38 @@
+﻿@model ITypeCompareSet_Website
+@{
+
+}
+<form asp-controller="Pokemon" asp-action="TypeCompareSet" method="post">
+    <table class="table table-bordered border-primary tablefreeze">
+        <thead>
+            <tr>
+                <th></th>
+                @for (int i = 0; i < @Model.tc.Count; i++)
+                {
+                    <th>
+                        <img src="@Model.tc[i].Image" asp-append-version="true" width="50" height="50">
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < @Model.tc.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <img src="@Model.tc[i].Image" asp-append-version="true" width="50" height="50">
+                    </td>
+                    @for (int x = 0; x < @Model.tc[i].tdl.Count; x++)
+                    {
+                        <td class="TypeCompareTd">
+                            <input asp-for="tc[i].tdl[x].Damage">
+                            <input asp-for="tc[i].No" hidden="hidden">
+                            <input asp-for="tc[i].tdl[x].No" hidden="hidden">
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button asp-controller="Pokemon" asp-action="TypeCompareSet" class="btn btn-outline-success">存檔</!button>
+</form>

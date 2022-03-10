@@ -1,4 +1,6 @@
 using PokeWeb;
+using PokeWeb.Extensions;
+using PokeWeb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 //不設定連結字串的呼叫方式
 builder.Services.AddDbContext<PokeContext>();
+
+builder.Services.AddSingleton<IFileExt, FileExt>();
+
+builder.Services.AddTransient<ITypeCompareSet_Website, TypeCompareSet_Website>();
 
 var app = builder.Build();
 

@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/scss/SiderBar.css",
     "inputFile": "wwwroot/scss/SiderBar.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/CommonSite.css",
+    "inputFile": "wwwroot/scss/CommonSite.scss"
   }
 ]
