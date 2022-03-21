@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using PokeWeb;
 using PokeWeb.Extensions;
 using PokeWeb.Models;
@@ -5,9 +7,20 @@ using PokeWeb.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(option =>
+{
+    option.Filters.Add(new AuthorizeFilter());
+});
 //不設定連結字串的呼叫方式
 builder.Services.AddDbContext<PokeContext>();
+
+#region ForSignIn
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
+{
+    //未登入時會自動導到這個網址
+    option.LoginPath = new PathString("/Login/Login");
+});
+#endregion
 
 builder.Services.AddSingleton<IFileExt, FileExt>();
 
@@ -29,6 +42,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+#region ForSignIn
+app.UseCookiePolicy();
+app.UseAuthentication();
+#endregion
 
 app.MapControllerRoute(
     name: "default",

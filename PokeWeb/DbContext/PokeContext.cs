@@ -7,7 +7,6 @@ namespace PokeWeb
     {
         public DbSet<db_Pokemon> Pokemons { get; set; }
         public DbSet<db_PokemonType> PokemonTypes { get; set; }
-        public DbSet<db_TypeCompare> TypeCompares { get; set; }
 
         public PokeContext()
         {
