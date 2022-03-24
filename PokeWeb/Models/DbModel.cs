@@ -66,5 +66,13 @@ namespace PokeWeb.Models
             public int Type_2 { get; set; }
             public decimal Damage { get; set; }
         }
+
+        public class db_Employee
+        {
+            public string Account { get; set; }
+            public string Password { get; set; }
+            public string Email { get; set; }
+            public string Nick { get; set; }
+        }
     }
 }

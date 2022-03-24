@@ -1,0 +1,18 @@
+﻿@model ILoginPost
+@{
+    string error = string.IsNullOrEmpty(ViewBag.Error) ? "" : ViewBag.Error;
+}
+<form asp-controller="Auth" asp-action="Login" method="post">
+    <div class="form-floating mb-3">
+        <input asp-for="Account" class="form-control" id="account" placeholder="123" autocomplete="off">
+        <label for="pmNo">帳號</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Password" class="form-control" id="password" placeholder="456" autocomplete="off">
+        <label for="pmTwName">密碼</label>
+    </div>
+    <div class="mb-3">
+        <label class="FontRed">@error</label>
+    </div>
+    <button asp-controller="Auth" asp-action="Login" class="btn btn-outline-success">登入</button>
+</form>

@@ -31,3 +31,7 @@
   /* 首行永遠固定於左 */
   z-index: 1;
 }
+
+.FontRed {
+  color: red;
+}

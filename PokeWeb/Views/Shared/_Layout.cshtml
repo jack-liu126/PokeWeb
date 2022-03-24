@@ -25,6 +25,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pokemon" asp-action="Index">Pokemon</a>
                         </li>
                     </ul>
+                    <form class="d-flex">
+                        @if (!Context.User.Identity.IsAuthenticated)
+                        {
+                            <button class="btn btn-outline-success" asp-controller="Auth" asp-action="Login">登入</button>
+                        }
+                        else
+                        {
+                            <a class="nav-link" href="#">@Context.User.Claims.FirstOrDefault(x=>x.Type=="FullName")?.Value</a>
+                            <button class="btn btn-outline-danger" asp-controller="Auth" asp-action="Logout">登出</button>
+                        }
+                    </form>
                 </div>
             </div>
         </nav>

@@ -120,7 +120,7 @@ namespace PokeWeb.Controllers
                     //SaveFile(pw.Pokemon.ImgFile, _staticRoute("image\\Pokemon\\Pokemon\\"), FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
                     _file.SaveFile(pw.Pokemon.ImgFile, "image\\Pokemon\\Pokemon\\", FileName + Path.GetExtension(pw.Pokemon.ImgFile.FileName));
                 }
-                await _db.Pokemons.AddAsync(pw.Pokemon);
+                await _db.Set<db_Pokemon>().AddAsync(pw.Pokemon);
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -139,7 +139,7 @@ namespace PokeWeb.Controllers
         {
             string path = "image/Pokemon/Type/";
             db_PokemonType dpt = new db_PokemonType();
-            dpt.No = _db.PokemonTypes.Count() + 1;
+            dpt.No = _db.Set<db_PokemonType>().Count() + 1;
             dpt.TwName = ptw.Type.TwName;
             dpt.JpName = ptw.Type.JpName;
             dpt.EnName = ptw.Type.EnName;
@@ -157,7 +157,7 @@ namespace PokeWeb.Controllers
                     //SaveFile(ptw.Type.ImageIcon[0], path);
                     _file.SaveFile(ptw.Type.ImageIcon[0], path);
                 }
-                await _db.PokemonTypes.AddAsync(dpt);
+                await _db.Set<db_PokemonType>().AddAsync(dpt);
                 await _db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -213,7 +213,7 @@ namespace PokeWeb.Controllers
                     _file.SaveFile(db_p.ImgFile, "image\\Pokemon\\Pokemon\\", FileName + Path.GetExtension(db_p.ImgFile.FileName));
                 }
 
-                _db.Pokemons.Update(db_p);
+                _db.Set<db_Pokemon>().Update(db_p);
                 if (db_p.ImgFile == null)
                 {
                     _db.Entry<db_Pokemon>(db_p).Property(x => x.ImgRoute).IsModified = false;

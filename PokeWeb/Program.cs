@@ -18,7 +18,11 @@ builder.Services.AddDbContext<PokeContext>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
 {
     //未登入時會自動導到這個網址
-    option.LoginPath = new PathString("/Login/Login");
+    option.LoginPath = new PathString("/Auth/Login");
+    //沒權限會自動導到該網址
+    //option.AccessDeniedPath = new PathString("");
+    //登入期限
+    option.ExpireTimeSpan = TimeSpan.FromHours(12);
 });
 #endregion
 

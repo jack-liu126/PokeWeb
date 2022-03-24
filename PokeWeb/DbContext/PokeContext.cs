@@ -5,9 +5,6 @@ namespace PokeWeb
 {
     public partial class PokeContext : DbContext
     {
-        public DbSet<db_Pokemon> Pokemons { get; set; }
-        public DbSet<db_PokemonType> PokemonTypes { get; set; }
-
         public PokeContext()
         {
 
@@ -30,10 +27,16 @@ namespace PokeWeb
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             OnModelCreatingPartial(modelBuilder);
-            modelBuilder.Entity<db_Pokemon>();
-            modelBuilder.Entity<db_PokemonType>();
+            modelBuilder.Entity<db_Pokemon>()
+                .ToTable("Pokemons");
+            modelBuilder.Entity<db_PokemonType>()
+                .ToTable("PokemonTypes");
             modelBuilder.Entity<db_TypeCompare>()
+                .ToTable("TypeCompare")
                 .HasKey(p => new { p.Type_1, p.Type_2 });
+            modelBuilder.Entity<db_Employee>()
+                .ToTable("Employee")
+                .HasKey(p => p.Account);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
