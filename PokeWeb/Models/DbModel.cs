@@ -74,5 +74,21 @@ namespace PokeWeb.Models
             public string Email { get; set; }
             public string Nick { get; set; }
         }
+
+        public class db_Permission
+        {
+            public string Type { get; set; }
+            public bool Status { get; set; }
+            public string UpdateEmp { get; set; }
+            public string UpdateDate { get; set; }
+        }
+
+        public class db_PermissionList
+        {
+            public string Account { get; set; }
+            public string Type { get; set; }
+            public string UpdateEmp { get; set; }
+            public string UpdateDate { get; set; }
+        }
     }
 }

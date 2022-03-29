@@ -1,4 +1,7 @@
-﻿.TypeCompareTd {
+﻿$color-red: red;
+$color-black: black;
+
+.TypeCompareTd {
     vertical-align: middle;
 
     input {
@@ -34,5 +37,38 @@
 }
 
 .FontRed {
-    color: red;
+    color: $color-red !important;
+}
+
+.FontBlack {
+    color: $color-black !important;
+}
+
+.ddlList {
+    margin: 0px 20px 0px 0px;
+}
+
+.Login {
+    background-color: lavender;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 500px;
+    transform: translate(-50%,-50%);
+    border-radius: 8px;
+    text-align: left;
+
+    div {
+        margin: 10px 10px;
+        text-align: center;
+        font-size: 16pt;
+
+        #btnSub {
+            width: 100%;
+        }
+    }
+}
+
+.LoginBtn {
+    margin: 0px 10px 0px 10px;
 }

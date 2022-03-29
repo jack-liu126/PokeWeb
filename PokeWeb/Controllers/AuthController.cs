@@ -23,7 +23,7 @@ namespace PokeWeb.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginPost login)
         {
@@ -31,7 +31,7 @@ namespace PokeWeb.Controllers
                               where x.Account == login.Account && x.Password == login.Password
                               select x).SingleOrDefaultAsync();
 
-            if(user == null)
+            if (user == null)
             {
                 ViewBag.Error = "帳號密碼錯誤";
                 return View();
@@ -42,7 +42,8 @@ namespace PokeWeb.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.Account),
                     new Claim("FullName", user.Nick),
-                    //new Claim(ClaimTypes.Role, "Administrator")
+                    new Claim(ClaimTypes.Role, "public"),
+                    new Claim(ClaimTypes.Role, "admin"),
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -50,11 +51,21 @@ namespace PokeWeb.Controllers
                 return Redirect("/Pokemon/Index");
             }
         }
-        
+
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/Auth/Login");
+        }
+
+        public IActionResult EmpAdd()
+        {
+            return View();
+        }
+
+        public IActionResult EmpEdit()
+        {
+            return View();
         }
     }
 }

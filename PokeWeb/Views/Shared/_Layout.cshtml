@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PokeWeb</title>
+    <title>Fantasia</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PokeWeb.styles.css" asp-append-version="true" />
@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Pokemon" asp-action="Index">PokeWeb</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PokeWeb</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,13 +26,28 @@
                         </li>
                     </ul>
                     <form class="d-flex">
-                        @if (!Context.User.Identity.IsAuthenticated)
+                        @if (!@User.Identity.IsAuthenticated)
                         {
-                            <button class="btn btn-outline-success" asp-controller="Auth" asp-action="Login">登入</button>
+                            <button class="btn btn-outline-success LoginBtn" asp-controller="Auth" asp-action="Login">登入</button>
+                            <button class="btn btn-outline-success LoginBtn" asp-controller="Auth" asp-action="EmpAdd">註冊</button>
                         }
                         else
                         {
-                            <a class="nav-link" href="#">@Context.User.Claims.FirstOrDefault(x=>x.Type=="FullName")?.Value</a>
+                            @*<a class="nav-link" href="#">@Context.User.Claims.FirstOrDefault(x=>x.Type=="FullName")?.Value</a>*@
+                            @*@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
+                                @User.FindFirst("nameOfClaim")?.Value
+                                @User.IsInRole("123")*@
+                                <div class="nav-item dropdown ddlList">
+                                    <a class="nav-link dropdown-toggle FontBlack" href="#" id="ddl_account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @Context.User.Claims.FirstOrDefault(x=>x.Type=="FullName")?.Value
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="ddl_account">
+                                        <li><a class="dropdown-item FontBlack" href="#">個人資料</a></li>
+                                        <li><a class="dropdown-item FontBlack" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item FontBlack" href="#">Something else</a></li>
+                                    </ul>
+                                </div>
+
                             <button class="btn btn-outline-danger" asp-controller="Auth" asp-action="Logout">登出</button>
                         }
                     </form>
@@ -65,9 +80,9 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        @*<div class="container">
             &copy; 2022 - PokeWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+            </div>*@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
