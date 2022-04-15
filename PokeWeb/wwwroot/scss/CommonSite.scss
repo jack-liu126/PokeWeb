@@ -72,3 +72,12 @@ $color-black: black;
 .LoginBtn {
     margin: 0px 10px 0px 10px;
 }
+
+.Register {
+    background-color: azure;
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    width: 800px;
+    transform: translate(-50%,-50%);
+}

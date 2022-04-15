@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fantasia</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/PokeWeb.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/scss/SiderBar.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/scss/CommonSite.min.css" asp-append-version="true" />
 </head>
+<style>
+    body {
+        background-image: url(/image/Sao/SAO背景0.3.png);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -37,16 +46,16 @@
                             @*@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
                                 @User.FindFirst("nameOfClaim")?.Value
                                 @User.IsInRole("123")*@
-                                <div class="nav-item dropdown ddlList">
-                                    <a class="nav-link dropdown-toggle FontBlack" href="#" id="ddl_account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @Context.User.Claims.FirstOrDefault(x=>x.Type=="FullName")?.Value
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="ddl_account">
-                                        <li><a class="dropdown-item FontBlack" href="#">個人資料</a></li>
-                                        <li><a class="dropdown-item FontBlack" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item FontBlack" href="#">Something else</a></li>
-                                    </ul>
-                                </div>
+                            <div class="nav-item dropdown ddlList">
+                                <a class="nav-link dropdown-toggle FontBlack" href="#" id="ddl_account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @Context.User.Claims.FirstOrDefault(x=>x.Type=="FullName")?.Value
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="ddl_account">
+                                    <li><a class="dropdown-item FontBlack" href="#">個人資料</a></li>
+                                    <li><a class="dropdown-item FontBlack" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item FontBlack" href="#">Something else</a></li>
+                                </ul>
+                            </div>
 
                             <button class="btn btn-outline-danger" asp-controller="Auth" asp-action="Logout">登出</button>
                         }
